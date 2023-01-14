@@ -7,11 +7,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import uz.digital.cleanarchitecture.data.repository.AuthRepositoryImpl
+import uz.digital.cleanarchitecture.data.repository.ProductRepositoryImpl
 import uz.digital.cleanarchitecture.domain.repository.AuthRepository
+import uz.digital.cleanarchitecture.domain.repository.ProductRepository
 import uz.digital.cleanarchitecture.domain.use_case.auth_use_case.LogOutUseCase
 import uz.digital.cleanarchitecture.domain.use_case.auth_use_case.LoginUseCase
 import uz.digital.cleanarchitecture.domain.use_case.auth_use_case.RegisterUseCase
 import uz.digital.cleanarchitecture.domain.use_case.base.AllUseCases
+import uz.digital.cleanarchitecture.domain.use_case.product_use_case.CreateProductUseCase
+import uz.digital.cleanarchitecture.domain.use_case.product_use_case.GetAllProductUseCase
 import javax.inject.Singleton
 
 @Module
@@ -28,6 +32,7 @@ object AppModule {
     fun provideFirebaseFireStore(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
     }
+
     @Singleton
     @Provides
     fun provideAuthRepository(
@@ -39,13 +44,25 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideProductRepository(
+        firestore: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): ProductRepository {
+        return ProductRepositoryImpl(firestore, auth)
+    }
+
+    @Singleton
+    @Provides
     fun provideAllUseCases(
-        authRepository: AuthRepository
+        authRepository: AuthRepository,
+        productRepository: ProductRepository
     ): AllUseCases {
         return AllUseCases(
             loginUseCase = LoginUseCase(authRepository),
             registerUseCase = RegisterUseCase(authRepository),
-           logOutUseCase = LogOutUseCase(authRepository)
+            logOutUseCase = LogOutUseCase(authRepository),
+            createProductUseCase = CreateProductUseCase(productRepository),
+            getAllProductUseCase = GetAllProductUseCase(productRepository)
         )
     }
 }

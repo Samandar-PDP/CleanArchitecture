@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_color"
-    tools:context=".presentation.auth.register.RegisterFragment">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -15,10 +13,10 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            app:titleTextColor="@color/white"
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-            app:title="@string/register" />
+            app:title="Add"
+            app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -28,12 +26,6 @@
         android:orientation="vertical"
         android:padding="20dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:src="@drawable/img" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,13 +37,14 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 app:boxStrokeColor="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fullName"
+                    android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/full_name" />
+                    android:hint="@string/name" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,26 +56,11 @@
                 app:boxStrokeColor="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email"
+                    android:id="@+id/price"
                     android:layout_width="match_parent"
+                    android:inputType="number"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                app:boxStrokeColor="@color/blue"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password" />
+                    android:hint="@string/price" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,12 +71,12 @@
                 android:layout_marginTop="30dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRegister"
+                    android:id="@+id/createUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/blue"
+                    android:backgroundTint="#4CAF50"
                     android:padding="15dp"
-                    android:text="@string/register" />
+                    android:text="@string/add" />
 
                 <ProgressBar
                     android:id="@+id/prg"

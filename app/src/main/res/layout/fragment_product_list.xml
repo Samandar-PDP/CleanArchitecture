@@ -37,6 +37,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/prg"
+        android:layout_width="@dimen/pr"
+        android:layout_height="@dimen/pr"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="invisible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

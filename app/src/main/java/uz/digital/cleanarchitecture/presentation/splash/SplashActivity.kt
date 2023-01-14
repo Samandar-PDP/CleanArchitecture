@@ -4,14 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import uz.digital.cleanarchitecture.R
 import uz.digital.cleanarchitecture.presentation.auth.AuthActivity
 import uz.digital.cleanarchitecture.presentation.base.BaseActivity
 import uz.digital.cleanarchitecture.presentation.main.MainActivity
 
-@AndroidEntryPoint
 class SplashActivity : BaseActivity() {
+    private val viewModel: SplashViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -20,7 +21,11 @@ class SplashActivity : BaseActivity() {
             override fun onTick(millisUntilFinished: Long) {}
 
             override fun onFinish() {
-                intent(AuthActivity())
+                if (viewModel.isUserNotNull()) {
+                    intent(MainActivity())
+                } else {
+                    intent(AuthActivity())
+                }
             }
         }.start()
     }
