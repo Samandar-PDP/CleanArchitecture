@@ -1,10 +1,16 @@
 package uz.digital.cleanarchitecture.presentation.base
 
+import android.content.Intent
+import android.util.Patterns
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import uz.digital.cleanarchitecture.presentation.auth.AuthActivity
+import uz.digital.cleanarchitecture.presentation.main.MainActivity
 
+@AndroidEntryPoint
 open class BaseFragment(
     @LayoutRes layout: Int
 ) : Fragment(layout) {
@@ -16,5 +22,16 @@ open class BaseFragment(
         this.setOnClickListener {
             action(it)
         }
+    }
+    fun validate(email: String, password: String): Boolean {
+        if (Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 6) {
+            return true
+        }
+        return false
+    }
+    fun startActivity() {
+        val ac = (activity as AuthActivity)
+        ac.startActivity(Intent(ac, MainActivity::class.java))
+        ac.finish()
     }
 }
