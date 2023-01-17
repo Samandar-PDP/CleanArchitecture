@@ -1,5 +1,6 @@
 package uz.digital.cleanarchitecture.data.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
@@ -46,8 +47,8 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun logOut(): Boolean {
+    override fun logOut() {
         auth.signOut()
-        return true
+        Log.d("@@@ Impl", "logOut: working")
     }
 }

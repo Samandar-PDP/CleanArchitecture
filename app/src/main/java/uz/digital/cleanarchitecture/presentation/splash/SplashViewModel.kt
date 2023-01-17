@@ -9,5 +9,6 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ): ViewModel() {
+    val userId = auth.currentUser?.uid
     fun isUserNotNull() = auth.currentUser != null
 }

@@ -18,7 +18,8 @@ import uz.digital.cleanarchitecture.presentation.base.BaseFragment
 import uz.digital.cleanarchitecture.util.viewBinding
 
 class AddUpdateFragment : BaseFragment(R.layout.fragment_add_update) {
-    private val binding by viewBinding { FragmentAddUpdateBinding.bind(it) }
+    private var _binding: FragmentAddUpdateBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: AddUpdateViewModel by viewModels()
     private var product: Product? = null
 
@@ -29,6 +30,7 @@ class AddUpdateFragment : BaseFragment(R.layout.fragment_add_update) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAddUpdateBinding.bind(view)
         binding.toolBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -86,5 +88,10 @@ class AddUpdateFragment : BaseFragment(R.layout.fragment_add_update) {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

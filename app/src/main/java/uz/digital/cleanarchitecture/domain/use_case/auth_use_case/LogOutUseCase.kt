@@ -1,5 +1,6 @@
 package uz.digital.cleanarchitecture.domain.use_case.auth_use_case
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -11,7 +12,8 @@ import javax.inject.Inject
 class LogOutUseCase @Inject constructor(
     private val repository: AuthRepository
 )  {
-    suspend fun invoke(): Boolean {
-        return repository.logOut()
+    fun logOut() {
+        repository.logOut()
+        Log.d("@@@", "logOut: Log out usecase working")
     }
 }

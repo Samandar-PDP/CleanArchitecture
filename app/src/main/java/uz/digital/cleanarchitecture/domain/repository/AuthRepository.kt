@@ -7,5 +7,5 @@ import uz.digital.cleanarchitecture.util.Response
 interface AuthRepository {
     suspend fun login(user: User): Flow<Response<Boolean>>
     suspend fun register(user: User): Flow<Response<Boolean>>
-    suspend fun logOut(): Boolean
+    fun logOut()
 }

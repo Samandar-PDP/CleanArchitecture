@@ -2,6 +2,7 @@ package uz.digital.cleanarchitecture.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -18,7 +19,7 @@ class ProductRepositoryImpl @Inject constructor(
 ) : ProductRepository {
 
     private var isSuccessful = false
-    private val uid = auth.currentUser?.uid!!
+    private val uid = auth.currentUser?.uid
 
     override suspend fun getAllProducts(): Flow<Response<List<Product>>> = callbackFlow {
         Response.Loading
@@ -43,7 +44,7 @@ class ProductRepositoryImpl @Inject constructor(
         try {
             emit(Response.Loading)
             val productId = firestore.collection("products").document().id
-            val newProduct = Product(userId = uid, name = product.name, price = product.price)
+            val newProduct = Product(userId = "$uid", name = product.name, price = product.price)
             firestore.collection("products").document(productId).set(newProduct)
                 .addOnSuccessListener {
                     isSuccessful = true

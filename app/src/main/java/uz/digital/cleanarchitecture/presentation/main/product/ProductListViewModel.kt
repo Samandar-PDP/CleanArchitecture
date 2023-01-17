@@ -1,7 +1,9 @@
 package uz.digital.cleanarchitecture.presentation.main.product
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,15 +45,14 @@ class ProductListViewModel @Inject constructor(
                         ProductListState.Success(response.data)
                     }
                 }
-                println("@@@${state.value}")
             }
         }
     }
 
     fun logOut() {
         viewModelScope.launch {
-            delay(1000L)
-            allUseCases.logOutUseCase.invoke()
+            allUseCases.logOutUseCase.logOut()
+            Log.d("@@@", "logOut: viwmodel")
         }
     }
 }

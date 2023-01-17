@@ -10,7 +10,8 @@ import uz.digital.cleanarchitecture.domain.model.Product
 
 class ProductListAdapter :
     ListAdapter<Product, ProductListAdapter.ProductViewHolder>(DiffCallBack()) {
-    lateinit var onClick: (Product) -> Unit
+    lateinit var onDetailClick: (Product) -> Unit
+    lateinit var onEditClick: (Product) -> Unit
 
     private class DiffCallBack : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
@@ -42,9 +43,12 @@ class ProductListAdapter :
             with(binding) {
                 index.text = adapterPosition.plus(1).toString()
                 name.text = product.name
-            }
-            itemView.setOnClickListener {
-                onClick(product)
+                edit.setOnClickListener {
+                    onEditClick(product)
+                }
+                itemView.setOnClickListener {
+                    onDetailClick(product)
+                }
             }
         }
     }
