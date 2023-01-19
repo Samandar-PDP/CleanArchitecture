@@ -34,9 +34,4 @@ open class BaseFragment(
         ac.startActivity(Intent(ac, MainActivity::class.java))
         ac.finish()
     }
-    fun startAuthActivity() {
-        val ac = (activity as MainActivity)
-        ac.startActivity(Intent(ac, AuthActivity::class.java))
-        ac.finishAffinity()
-    }
 }

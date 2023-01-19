@@ -1,9 +1,12 @@
 package uz.digital.cleanarchitecture.data.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
@@ -55,11 +58,62 @@ class ProductRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateProduct(product: Product): Flow<Response<Boolean>> = flow {
-
+    override suspend fun updateProduct(
+        oldProduct: Product,
+        newProduct: Map<String, Any>
+    ): Response<Boolean> {
+        isSuccessful = false
+        return try {
+            val query = firestore.collection("products")
+                .whereEqualTo("name", oldProduct.name)
+                .whereEqualTo("price", oldProduct.price)
+                .whereEqualTo("userId", oldProduct.userId)
+                .get()
+                .await()
+            if (query.documents.isNotEmpty()) {
+                for (doc in query) {
+                    firestore.collection("products")
+                        .document(doc.id)
+                        .set(
+                            newProduct,
+                            SetOptions.merge()
+                        )
+                        .addOnSuccessListener {
+                            isSuccessful = true
+                        }
+                        .await()
+                }
+            }
+            Response.Success(isSuccessful)
+        } catch (e: Exception) {
+            Log.d("@@@", "${e.message}")
+            Response.Error(e.message.toString())
+        }
     }
 
     override suspend fun deleteProduct(product: Product): Flow<Response<Boolean>> = flow {
-
+        isSuccessful = false
+        emit(Response.Loading)
+        try {
+            val query = firestore.collection("products")
+                .whereEqualTo("name", product.name)
+                .whereEqualTo("price", product.price)
+                .whereEqualTo("userId", product.userId)
+                .get()
+                .await()
+            if (query.documents.isNotEmpty()) {
+                for (doc in query) {
+                    firestore.collection("products").document(doc.id)
+                        .delete()
+                        .addOnSuccessListener {
+                            isSuccessful = true
+                        }
+                        .await()
+                }
+                emit(Response.Success(isSuccessful))
+            }
+        } catch (e: Exception) {
+            Response.Error(e.message.toString())
+        }
     }
 }

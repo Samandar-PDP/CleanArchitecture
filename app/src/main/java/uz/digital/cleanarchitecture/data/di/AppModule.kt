@@ -15,7 +15,9 @@ import uz.digital.cleanarchitecture.domain.use_case.auth_use_case.LoginUseCase
 import uz.digital.cleanarchitecture.domain.use_case.auth_use_case.RegisterUseCase
 import uz.digital.cleanarchitecture.domain.use_case.base.AllUseCases
 import uz.digital.cleanarchitecture.domain.use_case.product_use_case.CreateProductUseCase
+import uz.digital.cleanarchitecture.domain.use_case.product_use_case.DeleteProductUseCase
 import uz.digital.cleanarchitecture.domain.use_case.product_use_case.GetAllProductUseCase
+import uz.digital.cleanarchitecture.domain.use_case.product_use_case.UpdateProductUseCase
 import javax.inject.Singleton
 
 @Module
@@ -62,7 +64,9 @@ object AppModule {
             registerUseCase = RegisterUseCase(authRepository),
             logOutUseCase = LogOutUseCase(authRepository),
             createProductUseCase = CreateProductUseCase(productRepository),
-            getAllProductUseCase = GetAllProductUseCase(productRepository)
+            getAllProductUseCase = GetAllProductUseCase(productRepository),
+            updateProductUseCase = UpdateProductUseCase(productRepository),
+            deleteProductUseCase = DeleteProductUseCase(productRepository)
         )
     }
 }

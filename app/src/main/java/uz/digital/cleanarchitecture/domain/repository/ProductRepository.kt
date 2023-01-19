@@ -6,7 +6,7 @@ import uz.digital.cleanarchitecture.util.Response
 
 interface ProductRepository {
     suspend fun createProduct(product: Product): Flow<Response<Boolean>>
-    suspend fun updateProduct(product: Product): Flow<Response<Boolean>>
+    suspend fun updateProduct(oldProduct: Product, newProduct: Map<String, Any>): Response<Boolean>
     suspend fun deleteProduct(product: Product): Flow<Response<Boolean>>
     suspend fun getAllProducts(): Flow<Response<List<Product>>>
 }

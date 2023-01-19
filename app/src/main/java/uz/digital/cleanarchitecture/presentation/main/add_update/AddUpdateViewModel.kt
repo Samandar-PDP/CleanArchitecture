@@ -1,5 +1,6 @@
 package uz.digital.cleanarchitecture.presentation.main.add_update
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,7 +47,22 @@ class AddUpdateViewModel @Inject constructor(
                 }
             }
             is AddUpdateEvent.OnUpdateProduct -> {
-
+                viewModelScope.launch {
+                    _state.update {
+                        AddUpdateState.Loading
+                    }
+                    delay(1000L)
+                    when (val response =
+                        useCases.updateProductUseCase.invoke(event.oldProduct, event.newProduct)) {
+                        is Response.Loading -> Unit
+                        is Response.Error -> _state.update {
+                            AddUpdateState.Error(response.message)
+                        }
+                        is Response.Success -> _state.update {
+                            AddUpdateState.SuccessUpdate
+                        }
+                    }
+                }
             }
         }
     }

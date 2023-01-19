@@ -19,11 +19,12 @@ import uz.digital.cleanarchitecture.R
 import uz.digital.cleanarchitecture.databinding.FragmentAddUpdateBinding
 import uz.digital.cleanarchitecture.databinding.FragmentProductListBinding
 import uz.digital.cleanarchitecture.presentation.base.BaseFragment
+import uz.digital.cleanarchitecture.presentation.main.MainActivity
 import uz.digital.cleanarchitecture.util.viewBinding
 
 class ProductListFragment : BaseFragment(R.layout.fragment_product_list) {
     private var _binding: FragmentProductListBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel by viewModels<ProductListViewModel>()
     private val productListAdapter by lazy { ProductListAdapter() }
 
@@ -33,7 +34,7 @@ class ProductListFragment : BaseFragment(R.layout.fragment_product_list) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,19 +43,23 @@ class ProductListFragment : BaseFragment(R.layout.fragment_product_list) {
     }
 
     private fun initViews() {
-        binding.btnLogOut.click {
+        binding?.btnLogOut?.click {
             showDialog()
         }
-        binding.fab.click {
+        binding?.fab?.click {
             findNavController().navigate(R.id.action_productListFragment_to_addUpdateFragment)
         }
-        binding.rv.apply {
+        binding?.rv?.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = productListAdapter
         }
         productListAdapter.onDetailClick = {
             val product = bundleOf("product" to it)
-            findNavController().navigate(R.id.action_productListFragment_to_detailFragment)
+            findNavController().navigate(R.id.action_productListFragment_to_detailFragment, product)
+        }
+        productListAdapter.onEditClick = {
+            val product = bundleOf("product" to it)
+            findNavController().navigate(R.id.action_productListFragment_to_addUpdateFragment, product)
         }
         observeViewModel()
     }
@@ -65,14 +70,14 @@ class ProductListFragment : BaseFragment(R.layout.fragment_product_list) {
                 when (it) {
                     is ProductListState.Idle -> Unit
                     is ProductListState.Loading -> {
-                        binding.prg.isVisible = true
+                        binding?.prg?.isVisible = true
                     }
                     is ProductListState.Error -> {
-                        binding.prg.isVisible = false
+                        binding?.prg?.isVisible = false
                         snackBar(it.message)
                     }
                     is ProductListState.Success -> {
-                        binding.prg.isVisible = false
+                        binding?.prg?.isVisible = false
                         productListAdapter.submitList(it.productList)
                     }
                 }
@@ -86,11 +91,16 @@ class ProductListFragment : BaseFragment(R.layout.fragment_product_list) {
             setMessage("Do you want to log out?")
             setPositiveButton("Yes") { di, _ ->
                 viewModel.logOut()
-                binding.prg.isVisible = true
+                binding?.prg?.isVisible = true
                 di.dismiss()
-                startAuthActivity()
+                (activity as MainActivity).finish()
             }
             setNegativeButton("Cancel", null)
         }.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

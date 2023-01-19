@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#F44336"
                 android:padding="15dp"
+                android:visibility="invisible"
                 android:text="@string/delete" />
 
             <ProgressBar
@@ -65,7 +66,7 @@
                 android:layout_height="@dimen/pr"
                 android:layout_gravity="center"
                 android:indeterminateTint="@color/blue"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
         </FrameLayout>
 
